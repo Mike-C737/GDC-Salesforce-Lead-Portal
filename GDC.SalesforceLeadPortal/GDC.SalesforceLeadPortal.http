@@ -1,0 +1,6 @@
+@GDC.SalesforceLeadPortal_HostAddress = http://localhost:5259
+
+GET {{GDC.SalesforceLeadPortal_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
