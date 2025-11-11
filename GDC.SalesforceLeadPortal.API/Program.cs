@@ -1,11 +1,22 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var corsPolicy = "_dev";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(corsPolicy, policy =>
+        policy.WithOrigins(
+            "http://localhost:5173"      // Vite dev server
+                                         
+        )
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+    );
+});
 
 var app = builder.Build();
 
@@ -16,7 +27,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 app.UseHttpsRedirection();
+
+app.UseCors(corsPolicy);
 
 app.UseAuthorization();
 
