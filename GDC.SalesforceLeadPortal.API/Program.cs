@@ -1,32 +1,24 @@
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var corsPolicy = "_dev";
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(corsPolicy, policy =>
-        policy.WithOrigins(
-            "http://localhost:5173"      // Vite dev server
-                                         
-        )
-        .AllowAnyHeader()
-        .AllowAnyMethod()
-    );
-});
+builder.Services.AddCors(o => o.AddPolicy(corsPolicy, p =>
+    p.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod()));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 
 app.UseHttpsRedirection();
 
